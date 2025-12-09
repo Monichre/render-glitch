@@ -45,19 +45,19 @@ const anomalies = [
   },
   {
     id: "05",
-    title: "Remote Perception Claims",
+    title: "Remote Viewing",
     category: "Consciousness Hooks",
     description:
-      "CIA Stargate Project remote viewing, presentiment studies. If consciousness is part of the rendering engine, these may be failed attempts at conscious wavefunction hacking.",
+      "CIA Stargate Project documented cases of perception at distance. Ingo Swann, Pat Price, and others demonstrated anomalous cognition under controlled conditions. Consciousness accessing render data outside local viewport.",
     status: "Fringe",
-    tags: ["psi", "remote-viewing", "consciousness"],
+    tags: ["psi", "stargate", "non-local-perception"],
   },
   {
     id: "06",
     title: "Morphic Resonance",
-    category: "Consciousness Hooks",
+    category: "Field Memory Access",
     description:
-      "Rupert Sheldrake's hypothesis that memory is inherent in nature. Non-local information transfer suggesting shared field access across sandbox instances.",
+      "Rupert Sheldrake's hypothesis that memory is inherent in nature. Non-local information transfer suggesting shared field access across sandbox instances. Habits of nature as cached render patterns.",
     status: "Fringe",
     tags: ["morphic-fields", "non-local", "memory"],
   },
@@ -78,6 +78,24 @@ const anomalies = [
       "Non-speaking autistic individuals demonstrating apparent telepathic communication. Debug logs hinting at deeper observer/reality coupling bypassing verbal interface.",
     status: "Emergent",
     tags: ["autism", "telepathy", "consciousness"],
+  },
+  {
+    id: "09",
+    title: "Quantum Consciousness",
+    category: "Orchestrated Collapse",
+    description:
+      "Penrose-Hameroff Orch-OR theory: consciousness arises from quantum computations in microtubules. The observer isn't just reading render output—it's executing collapse operations at the hardware level.",
+    status: "Emergent",
+    tags: ["microtubules", "penrose", "orch-or", "collapse"],
+  },
+  {
+    id: "10",
+    title: "Global Consciousness Project",
+    category: "Collective Field Effects",
+    description:
+      "Random number generators worldwide showing correlations during major global events (9/11, deaths of public figures). Mass attention creating measurable deviations—collective observers perturbing the render state.",
+    status: "Fringe",
+    tags: ["rng", "collective", "mass-attention", "correlation"],
   },
 ]
 

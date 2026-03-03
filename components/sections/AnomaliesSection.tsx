@@ -1,10 +1,14 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { cn } from "@/lib/utils"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const FILTER_OPTIONS = ["All", "Documented", "Fringe", "Emergent"] as const
+type FilterType = (typeof FILTER_OPTIONS)[number]
 
 const anomalies = [
   {
@@ -102,6 +106,34 @@ const anomalies = [
 export function AnomaliesSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
+  const [activeFilter, setActiveFilter] = useState<FilterType>("All")
+
+  const filteredAnomalies = activeFilter === "All"
+    ? anomalies
+    : anomalies.filter((a) => a.status === activeFilter)
+
+  const handleFilterChange = useCallback((filter: FilterType) => {
+    if (filter === activeFilter) return
+    setActiveFilter(filter)
+
+    // Animate cards on filter change
+    requestAnimationFrame(() => {
+      if (!gridRef.current) return
+      const cards = gridRef.current.querySelectorAll(".anomaly-card")
+      gsap.fromTo(
+        cards,
+        { y: 30, opacity: 0, scale: 0.95 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.06,
+          ease: "power2.out",
+        }
+      )
+    })
+  }, [activeFilter])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -145,7 +177,7 @@ export function AnomaliesSection() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [activeFilter])
 
   return (
     <section ref={sectionRef} id="anomalies" className="relative min-h-screen py-32">
@@ -166,9 +198,33 @@ export function AnomaliesSection() {
           </p>
         </div>
 
+        {/* Filter Tabs */}
+        <div className="flex items-center gap-2 mb-10 flex-wrap">
+          {FILTER_OPTIONS.map((filter) => {
+            const count = filter === "All"
+              ? anomalies.length
+              : anomalies.filter((a) => a.status === filter).length
+            return (
+              <button
+                key={filter}
+                onClick={() => handleFilterChange(filter)}
+                className={cn(
+                  "font-mono text-[10px] tracking-[0.15em] uppercase px-4 py-2 border transition-all duration-300",
+                  activeFilter === filter
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-transparent text-muted-foreground border-border/40 hover:border-primary/40 hover:text-foreground"
+                )}
+              >
+                {filter}
+                <span className="ml-2 text-[9px] opacity-60">{String(count).padStart(2, "0")}</span>
+              </button>
+            )
+          })}
+        </div>
+
         {/* Anomalies Grid */}
         <div ref={gridRef} className="grid md:grid-cols-2 gap-6 max-w-6xl">
-          {anomalies.map((anomaly) => (
+          {filteredAnomalies.map((anomaly) => (
             <div
               key={anomaly.id}
               className="anomaly-card group relative bg-black/40 border border-primary/20 rounded-lg p-6 hover:border-primary/40 transition-all duration-300"
@@ -192,8 +248,8 @@ export function AnomaliesSection() {
                         anomaly.status === "Documented"
                           ? "bg-primary/20 text-primary"
                           : anomaly.status === "Fringe"
-                            ? "bg-yellow-500/20 text-yellow-400"
-                            : "bg-purple-500/20 text-purple-400"
+                            ? "bg-warning/20 text-warning"
+                            : "bg-fringe/20 text-fringe"
                       }`}
                     >
                       {anomaly.status}

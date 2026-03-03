@@ -2,9 +2,18 @@
 
 import { useEffect, useState } from "react"
 
+const BOOT_LOG_LINES = [
+  { threshold: 10, text: "> SANDBOX: INITIALIZING", prefix: "OK" },
+  { threshold: 30, text: "> KERNEL: HIDDEN", prefix: "OK" },
+  { threshold: 55, text: "> SUPERPOSITION: ACTIVE", prefix: "OK" },
+  { threshold: 75, text: "> COLLAPSE: DEFERRED", prefix: "WARN" },
+  { threshold: 95, text: "> OBSERVER: LINKED", prefix: "OK" },
+]
+
 export function LoadingScreen() {
   const [progress, setProgress] = useState(0)
   const [phase, setPhase] = useState(0)
+  const [visibleLines, setVisibleLines] = useState<number[]>([])
 
   const phases = ["Initializing scene", "Loading geometry", "Compiling shaders", "Rendering"]
 
@@ -23,6 +32,14 @@ export function LoadingScreen() {
 
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    BOOT_LOG_LINES.forEach((line, index) => {
+      if (progress >= line.threshold && !visibleLines.includes(index)) {
+        setVisibleLines((prev) => [...prev, index])
+      }
+    })
+  }, [progress, visibleLines])
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">
@@ -58,6 +75,31 @@ export function LoadingScreen() {
           {/* Phase text */}
           <div className="font-mono text-[10px] tracking-widest uppercase text-muted-foreground h-4">
             {phases[phase]}...
+          </div>
+
+          {/* Boot log lines */}
+          <div className="w-64 mt-4 flex flex-col gap-1">
+            {BOOT_LOG_LINES.map((line, index) => (
+              <div
+                key={index}
+                className="font-mono text-[9px] tracking-wider flex items-center gap-2 transition-all duration-300"
+                style={{
+                  opacity: visibleLines.includes(index) ? 1 : 0,
+                  transform: visibleLines.includes(index) ? "translateY(0)" : "translateY(4px)",
+                }}
+              >
+                <span
+                  className={
+                    line.prefix === "WARN"
+                      ? "text-warning"
+                      : "text-primary/70"
+                  }
+                >
+                  [{line.prefix}]
+                </span>
+                <span className="text-muted-foreground/60">{line.text}</span>
+              </div>
+            ))}
           </div>
         </div>
 

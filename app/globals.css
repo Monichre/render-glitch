@@ -21,6 +21,10 @@
   --accent-foreground: oklch(0.1 0.01 260);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.95 0 0);
+  --warning: oklch(0.75 0.18 80);
+  --warning-foreground: oklch(0.15 0.02 80);
+  --fringe: oklch(0.65 0.20 300);
+  --fringe-foreground: oklch(0.95 0.01 300);
   --border: oklch(0.25 0.02 260);
   --input: oklch(0.18 0.015 260);
   --ring: oklch(0.6 0.1 180);
@@ -49,6 +53,10 @@
   --accent-foreground: oklch(0.1 0.01 260);
   --destructive: oklch(0.5 0.2 25);
   --destructive-foreground: oklch(0.95 0 0);
+  --warning: oklch(0.75 0.18 80);
+  --warning-foreground: oklch(0.15 0.02 80);
+  --fringe: oklch(0.65 0.20 300);
+  --fringe-foreground: oklch(0.95 0.01 300);
   --border: oklch(0.25 0.02 260);
   --input: oklch(0.18 0.015 260);
   --ring: oklch(0.6 0.1 180);
@@ -78,6 +86,10 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-fringe: var(--fringe);
+  --color-fringe-foreground: var(--fringe-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -188,4 +200,81 @@
 
 .animate-scan {
   animation: scan 4s linear infinite;
+}
+
+/* Glitch text effect */
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(0 0 95% 0); transform: translate(-2px, -1px); }
+  10% { clip-path: inset(20% 0 60% 0); transform: translate(2px, 1px); }
+  20% { clip-path: inset(50% 0 30% 0); transform: translate(-1px, 2px); }
+  30% { clip-path: inset(70% 0 10% 0); transform: translate(1px, -1px); }
+  40% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
+  50% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+  60% { clip-path: inset(40% 0 40% 0); transform: translate(-1px, 1px); }
+  70% { clip-path: inset(0 0 80% 0); transform: translate(1px, 2px); }
+  80% { clip-path: inset(60% 0 20% 0); transform: translate(-2px, -1px); }
+  90% { clip-path: inset(30% 0 50% 0); transform: translate(2px, 1px); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { clip-path: inset(95% 0 0 0); transform: translate(2px, 1px); }
+  10% { clip-path: inset(60% 0 20% 0); transform: translate(-2px, -1px); }
+  20% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -2px); }
+  30% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+  40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -1px); }
+  50% { clip-path: inset(5% 0 80% 0); transform: translate(-2px, 2px); }
+  60% { clip-path: inset(40% 0 40% 0); transform: translate(1px, -1px); }
+  70% { clip-path: inset(80% 0 0 0); transform: translate(-1px, -2px); }
+  80% { clip-path: inset(20% 0 60% 0); transform: translate(2px, 1px); }
+  90% { clip-path: inset(50% 0 30% 0); transform: translate(-2px, -1px); }
+}
+
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.glitch-text::before {
+  color: oklch(0.70 0.18 200);
+  animation: glitch-1 3s infinite linear;
+  opacity: 0.7;
+}
+
+.glitch-text::after {
+  color: oklch(0.70 0.18 25);
+  animation: glitch-2 3s infinite linear;
+  animation-delay: 0.1s;
+  opacity: 0.7;
+}
+
+/* Signal line animation */
+@keyframes signal-sweep {
+  0% { transform: translateX(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(200vw); opacity: 0; }
+}
+
+.signal-line {
+  animation: signal-sweep 4s ease-in-out infinite;
+}
+
+/* Terminal cursor blink */
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-cursor {
+  animation: cursor-blink 1s step-end infinite;
 }

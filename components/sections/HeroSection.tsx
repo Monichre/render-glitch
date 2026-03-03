@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { TechLabel } from "../ui/TechLabel"
+import { GlitchText } from "../ui/GlitchText"
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -113,7 +114,7 @@ export function HeroSection() {
         </div>
         <div className="overflow-hidden mb-8">
           <h1 className="text-5xl md:text-7xl lg:text-[6rem] font-extralight tracking-tight animate-text">
-            <span className="text-primary text-glow">Glitches</span>
+            <GlitchText className="text-primary text-glow">Glitches</GlitchText>
           </h1>
         </div>
 

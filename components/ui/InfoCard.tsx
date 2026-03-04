@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { TechLabel } from "./TechLabel"
+import { useDecodeText } from "@/hooks/useDecodeText"
 
 interface Stat {
   label: string
@@ -18,6 +19,7 @@ interface InfoCardProps {
 }
 
 export function InfoCard({ number, title, subtitle, description, stats, className }: InfoCardProps) {
+  const { displayText, elementRef } = useDecodeText(description, { speed: 20, stagger: 1.5 })
   return (
     <div
       className={cn(
@@ -66,8 +68,13 @@ export function InfoCard({ number, title, subtitle, description, stats, classNam
           <TechLabel variant="accent">{subtitle}</TechLabel>
         </div>
 
-        {/* Description */}
-        <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{description}</p>
+        {/* Description - with decode effect */}
+        <p
+          ref={elementRef as React.RefObject<HTMLParagraphElement>}
+          className="text-sm md:text-base text-muted-foreground leading-relaxed font-mono"
+        >
+          {displayText}
+        </p>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/30">

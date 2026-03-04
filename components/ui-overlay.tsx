@@ -95,6 +95,11 @@ export function UIOverlay() {
         </nav>
       </header>
 
+      {/* Signal line below header */}
+      <div className="fixed top-14 md:top-16 left-0 right-0 z-40 h-px bg-border/10 pointer-events-none overflow-hidden">
+        <div className="signal-line absolute top-0 left-0 w-16 h-full bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      </div>
+
       {/* Progress indicator - left side */}
       <div className="fixed left-4 md:left-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-3">
         <div className="relative">
@@ -120,14 +125,19 @@ export function UIOverlay() {
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-primary/30 animate-ping" />
                 )}
               </div>
-              <span
-                className={cn(
-                  "font-mono text-[9px] tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-all duration-200",
-                  currentSection === index ? "text-primary" : "text-foreground/50",
-                )}
-              >
-                {section.shortLabel}
-              </span>
+              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200 overflow-hidden">
+                <span
+                  className={cn(
+                    "font-mono text-[9px] tracking-wider uppercase whitespace-nowrap",
+                    currentSection === index ? "text-primary" : "text-foreground/50",
+                  )}
+                >
+                  {section.label}
+                </span>
+                <span className="font-mono text-[8px] text-muted-foreground/40">
+                  {Math.round(((index) / (SECTIONS.length - 1)) * 100)}%
+                </span>
+              </div>
             </button>
           ))}
 

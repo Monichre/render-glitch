@@ -1,22 +1,15 @@
 "use client"
 
 import { TechLabel } from "../ui/TechLabel"
+import { TerminalBlock } from "../ui/TerminalBlock"
 
 export function FooterSection() {
   return (
     <footer className="relative min-h-[50vh] flex items-end pb-12">
       <div className="container mx-auto px-6">
         <div className="flex flex-col gap-8">
-          <div className="py-8 border-t border-border/20">
-            <blockquote className="text-center max-w-2xl mx-auto">
-              <p className="text-sm md:text-base text-muted-foreground/70 italic leading-relaxed">
-                "The most merciful thing in the world, I think, is the inability of the human mind to correlate all its
-                contents."
-              </p>
-              <cite className="block mt-4 font-mono text-[10px] text-primary/60 tracking-wider">
-                — H.P. LOVECRAFT, THE CALL OF CTHULHU
-              </cite>
-            </blockquote>
+          <div className="py-8 border-t border-border/20 max-w-2xl mx-auto">
+            <TerminalBlock />
           </div>
 
           {/* Main footer content */}

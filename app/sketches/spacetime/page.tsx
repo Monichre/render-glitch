@@ -11,21 +11,10 @@ const SpacetimeWarp = dynamic(
 // ─── Slider ──────────────────────────────────────────────────────────────────
 
 function Slider({
-  label,
-  value,
-  min,
-  max,
-  step,
-  unit = "",
-  onChange,
+  label, value, min, max, step, unit = "", onChange,
 }: {
-  label: string
-  value: number
-  min: number
-  max: number
-  step: number
-  unit?: string
-  onChange: (v: number) => void
+  label: string; value: number; min: number; max: number
+  step: number; unit?: string; onChange: (v: number) => void
 }) {
   return (
     <div className="flex flex-col gap-1">
@@ -33,18 +22,15 @@ function Slider({
         <span className="font-mono text-[9px] tracking-widest uppercase text-muted-foreground">
           {label}
         </span>
-        <span className="font-mono text-[9px] text-primary">
+        <span className="font-mono text-[9px]" style={{ color: "#c8a84b" }}>
           {value.toFixed(2)}{unit}
         </span>
       </div>
       <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
+        type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-full h-px appearance-none bg-border accent-primary cursor-pointer"
+        className="w-full h-px appearance-none bg-border cursor-pointer"
+        style={{ accentColor: "#c8a84b" }}
       />
     </div>
   )
@@ -53,111 +39,125 @@ function Slider({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SpacetimePage() {
-  const [warpSpeed,   setWarpSpeed]   = useState(1.0)
-  const [gridDensity, setGridDensity] = useState(8.0)
-  const [aberration,  setAberration]  = useState(0.6)
+  const [warpSpeed,   setWarpSpeed]   = useState(0.6)
+  const [gridDensity, setGridDensity] = useState(9.0)
+  const [aberration,  setAberration]  = useState(0.4)
+  const [planetScale, setPlanetScale] = useState(1.0)
+  const [dustDensity, setDustDensity] = useState(0.7)
   const [showHUD,     setShowHUD]     = useState(true)
 
   return (
-    <main className="relative w-screen h-screen overflow-hidden bg-background">
+    <main className="relative w-screen h-screen overflow-hidden" style={{ background: "#080a06" }}>
 
       {/* Full-screen canvas */}
       <SpacetimeWarp
         warpSpeed={warpSpeed}
         gridDensity={gridDensity}
         aberration={aberration}
+        planetScale={planetScale}
+        dustDensity={dustDensity}
         className="absolute inset-0 w-full h-full"
       />
 
-      {/* Central label */}
+      {/* Top-left telemetry */}
+      <div className="absolute top-5 left-6 pointer-events-none select-none" aria-hidden>
+        <p className="font-mono text-[8px] tracking-[0.25em] uppercase"
+           style={{ color: "rgba(200,168,75,0.45)" }}>
+          00
+        </p>
+        <p className="font-mono text-[8px] tracking-[0.25em] uppercase mt-3"
+           style={{ color: "rgba(200,168,75,0.35)" }}>
+          00
+        </p>
+        <p className="font-mono text-[8px] tracking-[0.25em] uppercase mt-3"
+           style={{ color: "rgba(200,168,75,0.35)" }}>
+          00
+        </p>
+      </div>
+
+      {/* Top marker */}
+      <div className="absolute top-5 left-1/4 pointer-events-none select-none" aria-hidden>
+        <p className="font-mono text-[8px] tracking-[0.2em]"
+           style={{ color: "rgba(200,168,75,0.30)" }}>
+          05
+        </p>
+      </div>
+
+      {/* Centre telemetry cluster */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none"
+        className="absolute pointer-events-none select-none"
+        style={{
+          top: "42%",
+          left: "38%",
+          transform: "translate(-50%, -50%)",
+        }}
         aria-hidden
       >
-        <div className="flex flex-col items-center gap-3">
-          <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-primary/50">
-            z-axis traversal
-          </span>
-          <h1 className="font-mono text-[11px] tracking-[0.5em] uppercase text-foreground/20">
-            space — time
-          </h1>
-          <div className="w-16 h-px bg-primary/20" />
-          <span className="font-mono text-[8px] tracking-widest text-muted-foreground/30">
-            {warpSpeed.toFixed(2)}c
-          </span>
-        </div>
+        {[
+          "SANDBOX: INITIALIZING",
+          "KERNEL: HIDDEN",
+          "SUPERPOSITION: ACTIVE",
+          "COLLAPSE: DEFERRED",
+          "OBSERVER: LINKED",
+        ].map((line, i) => (
+          <p
+            key={i}
+            className="font-mono text-[7px] tracking-wider whitespace-nowrap leading-relaxed"
+            style={{ color: `rgba(200,168,75,${0.18 + i * 0.04})` }}
+          >
+            {line}
+          </p>
+        ))}
       </div>
 
-      {/* Corner coordinates */}
-      <div className="absolute top-4 left-4 pointer-events-none" aria-hidden>
-        <p className="font-mono text-[8px] text-muted-foreground/40 tracking-wider">
-          T+{new Date().toISOString().substring(11, 19)}
+      {/* Bottom-right label */}
+      <div className="absolute bottom-6 right-6 pointer-events-none select-none text-right" aria-hidden>
+        <p className="font-mono text-[8px] tracking-[0.3em] uppercase"
+           style={{ color: "rgba(200,168,75,0.25)" }}>
+          space — time
         </p>
-        <p className="font-mono text-[8px] text-muted-foreground/30 tracking-wider">
-          WARP / {warpSpeed.toFixed(2)} /
-        </p>
-      </div>
-
-      <div className="absolute bottom-4 right-4 pointer-events-none" aria-hidden>
-        <p className="font-mono text-[8px] text-right text-muted-foreground/30 tracking-wider">
-          SPACE-TIME CONTINUUM
-        </p>
-        <p className="font-mono text-[8px] text-right text-primary/30 tracking-wider">
-          RENDER GLITCH / OBSERVER
+        <p className="font-mono text-[7px] tracking-[0.2em]"
+           style={{ color: "rgba(200,168,75,0.15)" }}>
+          z-axis traversal / {warpSpeed.toFixed(2)}c
         </p>
       </div>
 
-      {/* Controls HUD */}
+      {/* Bottom-centre controls */}
       {showHUD && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-64 bg-card/60 border border-border/40 backdrop-blur-sm p-4 flex flex-col gap-4">
-          <div className="flex items-center justify-between mb-1">
-            <span className="font-mono text-[9px] tracking-widest uppercase text-muted-foreground">
-              warp parameters
+        <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 w-72 backdrop-blur-sm p-5 flex flex-col gap-4"
+          style={{ background: "rgba(8,10,6,0.75)", border: "1px solid rgba(200,168,75,0.15)" }}
+        >
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[8px] tracking-[0.25em] uppercase"
+                  style={{ color: "rgba(200,168,75,0.5)" }}>
+              cartograph parameters
             </span>
             <button
               onClick={() => setShowHUD(false)}
-              className="font-mono text-[9px] text-muted-foreground/50 hover:text-foreground transition-colors"
+              className="font-mono text-[8px] transition-opacity hover:opacity-100 opacity-40"
+              style={{ color: "#c8a84b" }}
               aria-label="Hide controls"
             >
               [hide]
             </button>
           </div>
 
-          <Slider
-            label="warp speed"
-            value={warpSpeed}
-            min={0.2}
-            max={3.0}
-            step={0.01}
-            unit="c"
-            onChange={setWarpSpeed}
-          />
-          <Slider
-            label="grid density"
-            value={gridDensity}
-            min={2.0}
-            max={20.0}
-            step={0.5}
-            onChange={setGridDensity}
-          />
-          <Slider
-            label="aberration"
-            value={aberration}
-            min={0.0}
-            max={1.0}
-            step={0.01}
-            onChange={setAberration}
-          />
+          <Slider label="warp speed"   value={warpSpeed}   min={0.1} max={2.0} step={0.01} unit="c" onChange={setWarpSpeed} />
+          <Slider label="grid density" value={gridDensity} min={3.0} max={18.0} step={0.5}          onChange={setGridDensity} />
+          <Slider label="planet scale" value={planetScale} min={0.4} max={1.8}  step={0.05}         onChange={setPlanetScale} />
+          <Slider label="dust density" value={dustDensity} min={0.0} max={1.0}  step={0.01}         onChange={setDustDensity} />
+          <Slider label="aberration"   value={aberration}  min={0.0} max={1.0}  step={0.01}         onChange={setAberration} />
         </div>
       )}
 
-      {/* Re-show button */}
       {!showHUD && (
         <button
           onClick={() => setShowHUD(true)}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-widest uppercase text-muted-foreground/40 hover:text-foreground transition-colors"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[8px] tracking-[0.25em] uppercase opacity-30 hover:opacity-70 transition-opacity"
+          style={{ color: "#c8a84b" }}
         >
-          [controls]
+          [parameters]
         </button>
       )}
     </main>

@@ -66,9 +66,9 @@ export class WebGLScene {
     this.onLoadComplete = onLoadComplete
 
     // Scene
-    this.scene            = new THREE.Scene()
+    this.scene = new THREE.Scene()
     this.scene.background = new THREE.Color(0x040608)
-    this.scene.fog        = new THREE.FogExp2(0x040608, 0.04)
+    this.scene.fog = new THREE.FogExp2(0x040608, 0.04)
 
     // Camera
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)

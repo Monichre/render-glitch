@@ -67,23 +67,8 @@ export class WebGLScene {
 
     // Scene
     this.scene = new THREE.Scene()
+    this.scene.background = new THREE.Color(0x040608)
     this.scene.fog = new THREE.FogExp2(0x040608, 0.04)
-
-    // Load topology image as a fixed equirectangular background texture
-    const textureLoader = new THREE.TextureLoader()
-    textureLoader.load(
-      "/topology-bg.jpg",
-      (tex) => {
-        tex.mapping = THREE.EquirectangularReflectionMapping
-        tex.colorSpace = THREE.SRGBColorSpace
-        this.scene.background = tex
-      },
-      undefined,
-      () => {
-        // Fallback to solid color if texture fails to load
-        this.scene.background = new THREE.Color(0x040608)
-      }
-    )
 
     // Camera
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)

@@ -6,7 +6,6 @@ export function TopologyBackground() {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    // Preload the image
     const img = new Image()
     img.src = "/topology-bg.jpg"
     img.onload = () => setLoaded(true)
@@ -14,49 +13,39 @@ export function TopologyBackground() {
 
   return (
     <div 
-      className="fixed inset-0 w-full h-full pointer-events-none"
-      style={{
-        zIndex: 0,
-        opacity: loaded ? 1 : 0,
-        transition: "opacity 1s ease-in-out",
-      }}
+      className="fixed inset-0 w-full h-full pointer-events-none select-none"
+      style={{ zIndex: -1 }}
+      aria-hidden="true"
     >
-      {/* Topology background - fixed and immersive */}
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('/topology-bg.jpg')",
-          backgroundAttachment: "fixed",
-          filter: "brightness(0.6) contrast(1.2) saturate(1.1)",
-          mixBlendMode: "screen",
-        }}
-      />
+      {/* Base dark layer */}
+      <div className="absolute inset-0 bg-[#040608]" />
       
-      {/* Subtle gradient overlay for depth */}
+      {/* Topology image - fixed position, no distortion */}
       <div
         className="absolute inset-0 w-full h-full"
         style={{
-          background: `
-            radial-gradient(ellipse at center, transparent 20%, rgba(4, 6, 8, 0.4) 70%, rgba(4, 6, 8, 0.8) 100%),
-            linear-gradient(to bottom, rgba(4, 6, 8, 0.3) 0%, transparent 30%, transparent 70%, rgba(4, 6, 8, 0.5) 100%)
-          `,
+          backgroundImage: loaded ? "url('/topology-bg.jpg')" : "none",
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          backgroundRepeat: "no-repeat",
+          opacity: loaded ? 0.35 : 0,
+          transition: "opacity 1.5s ease-out",
+        }}
+      />
+      
+      {/* Radial depth gradient - pushes focus to center */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "radial-gradient(ellipse 80% 70% at 50% 45%, transparent 0%, rgba(4,6,8,0.6) 60%, rgba(4,6,8,0.95) 100%)",
         }}
       />
 
-      {/* Animated scan line for tech aesthetic */}
+      {/* Top-to-bottom atmospheric gradient */}
       <div
-        className="absolute inset-0 w-full h-full opacity-10"
+        className="absolute inset-0"
         style={{
-          background: "repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(64, 255, 170, 0.05) 4px, rgba(64, 255, 170, 0.05) 6px)",
-          animation: "topology-scan 20s linear infinite",
-        }}
-      />
-      
-      {/* Corner vignette for focus */}
-      <div
-        className="absolute inset-0 w-full h-full"
-        style={{
-          background: "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(4, 6, 8, 0.6) 80%)",
+          background: "linear-gradient(180deg, rgba(4,6,8,0.4) 0%, transparent 25%, transparent 75%, rgba(4,6,8,0.7) 100%)",
         }}
       />
     </div>

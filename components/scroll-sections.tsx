@@ -29,9 +29,9 @@ const SECTIONS = [
 const TOTAL = SECTIONS.length
 
 // How far back (in px) each layer sits in Z before being brought forward
-const Z_DEPTH   = 1200
-const Z_RECEDE  = -600
-const SCROLL_MULTIPLIER = 1.6   // viewport-heights per section
+const Z_DEPTH   = 800
+const Z_RECEDE  = -400
+const SCROLL_MULTIPLIER = 1.4   // viewport-heights per section
 
 export function ScrollSections() {
   const scrollerRef  = useRef<HTMLDivElement>(null)
@@ -76,19 +76,23 @@ export function ScrollSections() {
         let scale: number
         let blur: number
 
+        // Smooth easing function for natural depth perception
+        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
+        const easeInCubic = (t: number) => t * t * t
+
         if (delta < -1) {
           // Far ahead — hidden deep in Z
-          tz      = Z_DEPTH * Math.abs(delta + 1)
+          tz      = Z_DEPTH * Math.min(Math.abs(delta + 1), 2)
           opacity = 0
-          scale   = 1 + 0.08 * Math.abs(delta + 1)
-          blur    = 12
+          scale   = 1 + 0.05 * Math.min(Math.abs(delta + 1), 2)
+          blur    = 8
         } else if (delta < 0) {
           // Coming toward us — interpolate from deep Z to centre
-          const t  = delta + 1          // 0 (far) → 1 (current)
+          const t  = easeOutCubic(delta + 1)  // 0 (far) → 1 (current)
           tz       = Z_DEPTH * (1 - t)
           opacity  = t
-          scale    = 1 + 0.08 * (1 - t)
-          blur     = 12 * (1 - t)
+          scale    = 1 + 0.05 * (1 - t)
+          blur     = 8 * (1 - t)
         } else if (delta === 0) {
           // Current — fully present
           tz      = 0
@@ -97,20 +101,20 @@ export function ScrollSections() {
           blur    = 0
         } else if (delta < 1) {
           // Receding — interpolate from centre to far back
-          const t  = delta              // 0 (current) → 1 (far)
+          const t  = easeInCubic(delta)  // 0 (current) → 1 (far)
           tz       = Z_RECEDE * t
-          opacity  = 1 - t * 0.92
-          scale    = 1 - 0.04 * t
-          blur     = 4 * t
+          opacity  = 1 - t * 0.85
+          scale    = 1 - 0.03 * t
+          blur     = 3 * t
         } else {
           // Far behind — nearly invisible
           tz      = Z_RECEDE
-          opacity = 0
-          scale   = 0.96
-          blur    = 4
+          opacity = 0.08
+          scale   = 0.97
+          blur    = 3
         }
 
-        layer.style.transform       = `perspective(900px) translateZ(${tz}px) scale(${scale})`
+        layer.style.transform       = `translateZ(${tz}px) scale(${scale})`
         layer.style.opacity         = String(opacity)
         layer.style.filter          = blur > 0.5 ? `blur(${blur.toFixed(1)}px)` : "none"
         layer.style.pointerEvents   = Math.round(floatIdx) === i ? "auto" : "none"
@@ -144,7 +148,11 @@ export function ScrollSections() {
       <div
         ref={stageRef}
         className="fixed inset-0 overflow-hidden"
-        style={{ transformStyle: "preserve-3d" }}
+        style={{ 
+          perspective: "1200px",
+          perspectiveOrigin: "50% 50%",
+          transformStyle: "preserve-3d",
+        }}
       >
         {SECTIONS.map(({ id, Component }, i) => (
           <div

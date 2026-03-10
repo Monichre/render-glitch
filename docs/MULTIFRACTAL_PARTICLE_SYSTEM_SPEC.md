@@ -26,7 +26,7 @@ Extend the existing Three.js WebGL scene (`lib/webgl/WebGLScene.ts`) and particl
 
 ### 2.1 System Diagram
 
-```
+\`\`\`
 MediaPipe Hands (WebRTC 30+ FPS)
         ↓
 GestureClassifier (21 keypoints × 2 hands)
@@ -53,11 +53,11 @@ UIOverlay (Tweakpane panel + HUD overlays)
 ├── SpectrumPlot       f(α) curve HUD wireframe
 ├── TauPlot            τ(q) curve
 └── ControlsPanel      (all sliders, dropdowns, toggles)
-```
+\`\`\`
 
 ### 2.2 New Module Map
 
-```
+\`\`\`
 lib/
 ├── webgl/
 │   ├── WebGLScene.ts              ← extend: add GPGPU init, gesture bridge
@@ -90,7 +90,7 @@ components/
     └── WebGLCanvas.tsx            ← extend: gesture video element
 hooks/
 └── useParticleControls.ts         ← new: unified state for all controls
-```
+\`\`\`
 
 ---
 
@@ -142,7 +142,7 @@ Where $p = 0.6$ (configurable). This is computed analytically, no approximation 
 
 ### 4.1 MediaPipe Setup
 
-```typescript
+\`\`\`typescript
 // lib/gesture/HandTracker.ts
 import { Hands } from "@mediapipe/hands"
 
@@ -156,7 +156,7 @@ hands.setOptions({
   minDetectionConfidence: 0.7,
   minTrackingConfidence: 0.6
 })
-```
+\`\`\`
 
 **Processing rate:** 30+ FPS via `requestAnimationFrame` on a hidden `<video>` element fed from `getUserMedia`.
 
@@ -243,7 +243,7 @@ For **500,000 particles**: textures are `768 × 768 = 589,824` pixels (next powe
 
 ### 5.2 Simulation Shader (ParticleSimShader.ts)
 
-```glsl
+\`\`\`glsl
 // Fragment shader — runs once per particle per frame
 uniform sampler2D positionTexture;
 uniform sampler2D velocityTexture;
@@ -329,11 +329,11 @@ void main() {
   gl_FragColor = vec4(pos, 1.0); // write to position output
   // (velocity, life, spectrum outputs written in separate passes)
 }
-```
+\`\`\`
 
 ### 5.3 Render Shader (ParticleRenderShader.ts)
 
-```glsl
+\`\`\`glsl
 // Vertex shader
 uniform sampler2D positionTexture;
 uniform sampler2D spectrumTexture;
@@ -370,7 +370,7 @@ void main() {
                      * (qOrder > 0.0 ? 1.5 : 0.8);
   gl_FragColor = vec4(tint * (1.0 + spectrumGlow), opacity);
 }
-```
+\`\`\`
 
 ### 5.4 Lifecycle
 
@@ -478,13 +478,13 @@ Canvas-based overlay (top-right corner, 240×160px), dark background, teal line:
 
 ### 8.1 LOD Strategy
 
-```
+\`\`\`
 Camera distance → D0 threshold → particle count tier
 < 10 units  → 500,000 particles (full)
 10–30 units → 200,000 particles
 30–60 units → 50,000 particles
 > 60 units  → 10,000 particles (background)
-```
+\`\`\`
 
 ---
 

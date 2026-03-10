@@ -278,3 +278,9 @@
 .terminal-cursor {
   animation: cursor-blink 1s step-end infinite;
 }
+
+/* Topology background scan line drift */
+@keyframes topology-scan {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(6px); }
+}

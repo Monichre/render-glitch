@@ -30,19 +30,30 @@ export function UIOverlay() {
     updateTime()
     const timeInterval = setInterval(updateTime, 1000)
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = scrollY / docHeight
+    // Primary source: custom zdepth event from z-scroll engine
+    const handleZDepth = (e: Event) => {
+      const { progress, section } = (e as CustomEvent).detail
       setScrollProgress(progress)
-      const sectionIndex = Math.min(Math.floor(progress * SECTIONS.length), SECTIONS.length - 1)
-      setCurrentSection(sectionIndex)
+      setCurrentSection(section)
     }
 
+    // Fallback: native scroll for progress bar
+    const handleScroll = () => {
+      const scrollY   = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      if (docHeight > 0) {
+        const progress = Math.min(scrollY / docHeight, 1)
+        setScrollProgress(progress)
+        setCurrentSection(Math.min(Math.floor(progress * SECTIONS.length), SECTIONS.length - 1))
+      }
+    }
+
+    window.addEventListener("zdepth", handleZDepth)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => {
       clearTimeout(timeout)
       clearInterval(timeInterval)
+      window.removeEventListener("zdepth", handleZDepth)
       window.removeEventListener("scroll", handleScroll)
     }
   }, [])
@@ -178,14 +189,19 @@ export function UIOverlay() {
         </div>
       </div>
 
-      {/* Coordinates display */}
+      {/* Z-depth telemetry */}
       <div className="fixed bottom-4 md:bottom-6 right-4 md:right-6 z-40 font-mono text-[9px] text-muted-foreground/40 tracking-wider">
-        <div className="flex flex-col items-end gap-0.5">
+        <div className="flex flex-col items-end gap-1">
           <div className="flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-primary/50" />
-            <span>SECTION {String(currentSection + 1).padStart(2, "0")}</span>
+            <span className="text-primary/70">Z-INDEX</span>
           </div>
-          <span className="text-[8px]">OF {String(SECTIONS.length).padStart(2, "0")}</span>
+          <span className="text-[11px] text-primary tabular-nums">
+            {(scrollProgress * -1200).toFixed(0)} px
+          </span>
+          <span className="text-[8px]">
+            LAYER {String(currentSection + 1).padStart(2, "0")} / {String(SECTIONS.length).padStart(2, "0")}
+          </span>
         </div>
       </div>
     </div>

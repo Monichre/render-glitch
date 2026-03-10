@@ -4,8 +4,15 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { InfoCard } from "../ui/InfoCard"
+import { SpatialLayer } from "../ui/SpatialLayer"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const CONSCIOUSNESS_HOTSPOTS = [
+  { id: "c1", x: 70, y: 22, z: 1.0, label: "Consciousness apex", value: "Observer: ACTIVE",   pulse: true },
+  { id: "c2", x: 82, y: 50, z: 0.6, label: "Neural mesh",        value: "Nodes: 86B+" },
+  { id: "c3", x: 68, y: 76, z: 0.3, label: "Symlink",            value: "/sandbox → /kernel" },
+]
 
 export function BiodiversitySection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -41,6 +48,14 @@ export function BiodiversitySection() {
 
   return (
     <section ref={sectionRef} id="consciousness" className="relative min-h-screen flex items-center">
+      <SpatialLayer
+        imageUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/abstract-neural-network-face-in-blue-light-4k%20%282%29-1beL2PvJIqZRdLdrcvcboBw0q6nPZZ.webp"
+        imageAlt="Neural network face in blue light"
+        hotspots={CONSCIOUSNESS_HOTSPOTS}
+        overlay="teal"
+        parallaxStrength={26}
+        tiltStrength={10}
+      />
       <div className="container mx-auto px-6 py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">

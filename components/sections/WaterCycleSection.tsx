@@ -4,8 +4,15 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { InfoCard } from "../ui/InfoCard"
+import { SpatialLayer } from "../ui/SpatialLayer"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const WATER_HOTSPOTS = [
+  { id: "w1", x: 20, y: 30, z: 0.9, label: "Entanglement Node", value: "Bell test: PASS", pulse: true },
+  { id: "w2", x: 38, y: 55, z: 0.5, label: "Non-local channel", value: "Latency: 0 ms" },
+  { id: "w3", x: 14, y: 70, z: 0.3, label: "Shared buffer",     value: "Global state sync" },
+]
 
 export function WaterCycleSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -40,6 +47,14 @@ export function WaterCycleSection() {
 
   return (
     <section ref={sectionRef} id="global-state" className="relative min-h-screen flex items-center">
+      <SpatialLayer
+        imageUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/abstract-particle-earth-visualization-4k.png-rzsmzo1F8KupUPLTYzhWuNCxQDz7oE.jpeg"
+        imageAlt="Particle earth visualization"
+        hotspots={WATER_HOTSPOTS}
+        overlay="teal"
+        parallaxStrength={22}
+        tiltStrength={7}
+      />
       <div className="container mx-auto px-6 py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="h-[40vh] lg:h-[60vh]" />

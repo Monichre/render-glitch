@@ -4,8 +4,15 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { cn } from "@/lib/utils"
+import { SpatialLayer } from "../ui/SpatialLayer"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const ANOMALY_HOTSPOTS = [
+  { id: "a1", x: 15, y: 20, z: 1.0, label: "Anomaly detected",  value: "Classification: Fringe", pulse: true },
+  { id: "a2", x: 88, y: 35, z: 0.7, label: "Contour ridge",     value: "Elevation: 4288 m" },
+  { id: "a3", x: 10, y: 75, z: 0.3, label: "Telemetry",         value: "30383 events logged" },
+]
 
 const FILTER_OPTIONS = ["All", "Documented", "Fringe", "Emergent"] as const
 type FilterType = (typeof FILTER_OPTIONS)[number]
@@ -181,6 +188,14 @@ export function AnomaliesSection() {
 
   return (
     <section ref={sectionRef} id="anomalies" className="relative min-h-screen py-32">
+      <SpatialLayer
+        imageUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/monochrome-3d-contour-mountain-landscape-4k-NFcOMgS8DFRwjKWpMnj634GQ6pzO3r.webp"
+        imageAlt="3D contour mountain landscape"
+        hotspots={ANOMALY_HOTSPOTS}
+        overlay="dark"
+        parallaxStrength={16}
+        tiltStrength={6}
+      />
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="max-w-4xl mb-20 animate-text">

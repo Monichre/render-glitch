@@ -3,6 +3,13 @@
 import { useEffect, useRef, useState } from "react"
 import { TechLabel } from "../ui/TechLabel"
 import { GlitchText } from "../ui/GlitchText"
+import { SpatialLayer } from "../ui/SpatialLayer"
+
+const HERO_HOTSPOTS = [
+  { id: "h1", x: 72, y: 38, z: 0.9, label: "Particle Horizon",  value: "Z = −∞",   pulse: true },
+  { id: "h2", x: 55, y: 62, z: 0.5, label: "Observer",          value: "Runtime active" },
+  { id: "h3", x: 28, y: 44, z: 0.3, label: "Sandbox Layer",     value: "KERNEL: HIDDEN" },
+]
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -100,6 +107,14 @@ export function HeroSection() {
       id="intro"
       className="relative min-h-screen flex flex-col items-center justify-center cursor-grab active:cursor-grabbing select-none touch-pan-y"
     >
+      <SpatialLayer
+        imageUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/abstract-star-speckled-black-texture-4k-uBf8Oq7eSX9FXKJllUkJkBnNXWFjLH.webp"
+        imageAlt="Star field background"
+        hotspots={HERO_HOTSPOTS}
+        overlay="teal"
+        parallaxStrength={28}
+        tiltStrength={8}
+      />
       <div className="text-center z-10 pointer-events-none px-6">
         <div className="mb-6 overflow-hidden flex justify-center">
           <TechLabel variant="accent" className="animate-text">

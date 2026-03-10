@@ -4,8 +4,15 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { InfoCard } from "../ui/InfoCard"
+import { SpatialLayer } from "../ui/SpatialLayer"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const TIME_HOTSPOTS = [
+  { id: "t1", x: 18, y: 30, z: 0.9, label: "Event commit",    value: "T+0.000 ms",       pulse: true },
+  { id: "t2", x: 30, y: 55, z: 0.5, label: "State delta",     value: "Δ = irreversible" },
+  { id: "t3", x: 22, y: 74, z: 0.2, label: "Log entry",       value: "APPEND: confirmed" },
+]
 
 export function CarbonStorageSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -44,6 +51,14 @@ export function CarbonStorageSection() {
 
   return (
     <section ref={sectionRef} id="time-artifact" className="relative min-h-screen flex items-center">
+      <SpatialLayer
+        imageUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/abstract-sunrise-with-horizontal-light-streaks-4k-L40b7uUtszscVUqcXuNtX8KSXZSnXT.jpeg"
+        imageAlt="Abstract sunrise light streaks"
+        hotspots={TIME_HOTSPOTS}
+        overlay="amber"
+        parallaxStrength={22}
+        tiltStrength={8}
+      />
       <div className="container mx-auto px-6 py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="h-[40vh] lg:h-[60vh]" />

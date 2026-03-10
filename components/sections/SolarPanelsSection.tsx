@@ -4,8 +4,15 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { InfoCard } from "../ui/InfoCard"
+import { SpatialLayer } from "../ui/SpatialLayer"
 
 gsap.registerPlugin(ScrollTrigger)
+
+const LAZY_HOTSPOTS = [
+  { id: "l1", x: 62, y: 28, z: 1.0, label: "Superposition",    value: "ψ = unresolved",  pulse: true },
+  { id: "l2", x: 78, y: 50, z: 0.6, label: "Collapse trigger",  value: "render() called" },
+  { id: "l3", x: 55, y: 72, z: 0.2, label: "Deferred branch",   value: "∞ states pending" },
+]
 
 export function LazyRenderSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -28,6 +35,14 @@ export function LazyRenderSection() {
 
   return (
     <section ref={sectionRef} id="lazy-render" className="relative min-h-screen flex items-center">
+      <SpatialLayer
+        imageUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/abstract-dotted-topographic-waves-on-black-background-4k-Oa0p3R5UnnLYZIWkfah36751e13jYs.webp"
+        imageAlt="Dotted topographic waves"
+        hotspots={LAZY_HOTSPOTS}
+        overlay="teal"
+        parallaxStrength={20}
+        tiltStrength={9}
+      />
       <div className="container mx-auto px-6 py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">

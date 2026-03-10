@@ -2,6 +2,12 @@
 
 import { TechLabel } from "../ui/TechLabel"
 import { TerminalBlock } from "../ui/TerminalBlock"
+import { SpatialLayer } from "../ui/SpatialLayer"
+
+const FOOTER_HOTSPOTS = [
+  { id: "f1", x: 58, y: 32, z: 0.8, label: "Session end",   value: "Observer: DETACHING", pulse: true },
+  { id: "f2", x: 72, y: 58, z: 0.4, label: "Dual bodies",   value: "Sandbox layers: 2" },
+]
 
 export function FooterSection() {
   return (
